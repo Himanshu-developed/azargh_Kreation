@@ -1,0 +1,21 @@
+version: '3'
+services:
+  database:
+    container_name: 'postgres'
+    image: postgres:latest
+    restart: always
+    ports:
+      - 5432:5432
+    env_file:
+      - docker.env
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 3000:3000
+    environment:
+      - DATABASE_URL=postgresql://admin:admin@database:5432/test
+    depends_on:
+      - database
